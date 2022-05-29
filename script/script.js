@@ -1,20 +1,20 @@
 let newSpendingSection = new Vue({
    el: '#new-spending-section',
    data: {
+       //flags to make tag visible or not
        nstVisible: true,
        nrsmVisible: false,
-       //nrmVisible: false,
        nsmVisible: false,
-       //v-mode variables for new rapid spendings
+       //v-mode vars for new rapid spendings
        nrsDesc:'',
-       //v-mode variables for new spendings
+       catList: '',
+       //v-mode vars for new spendings
        nsDate: '',
        nsStore: '',
        nsDesc: '',
+       sCat: JSON.parse(localStorage.getItem('categories')),
        nsAmount: '',
-       inVisible: false,
-       //srs -> stored rapid spendings
-       srs: JSON.parse(localStorage.getItem('rapid-spendings'))
+       inVisible: false
    },
    methods: {
         showRapidSpendingMenu: function() {
@@ -49,23 +49,29 @@ let newSpendingSection = new Vue({
         addRapidSpending: function() {
             console.log("start addRapindSpending");
             let rs = {
+                //id for rs must be implemented
                 "date": Date.now(),
                 // humanDate should be removed once it is clarified how v-for handle intermediate values
                 "humanDate": new Date().toString(),
                 "desc": this.nrsDesc,
                 "trialFlag": false
             }
-             //srs -> stored rapid spendings
-            //let srs = JSON.parse(localStorage.getItem('rapid-spendings'));
-            if (this.srs!=null)
-                this.srs.push(rs);
+            console.log('rs object: ');
+            console.log(rs);
+            // srs -> stored rapid savings
+            let srs = JSON.parse(localStorage.getItem('rapid-spendings'));
+            if (srs!=null)
+                srs.push(rs);
             else 
-                this.srs = [rs]
+                srs = [rs];
+            console.log('srs: '+srs);
             localStorage.removeItem('rapid-spendings');
-            localStorage.setItem('rapid-spendings',JSON.stringify(this.srs));
+            localStorage.setItem('rapid-spendings',JSON.stringify(srs));
+            rapidSpendigsSection.queryRapidSpendings();
+
         },
         addSpending: function() {
-            console.log("start addSpending");
+            console.log("start addSpending");            
             let s = {
                 desc: nsDesc
             }
@@ -78,6 +84,11 @@ let rapidSpendigsSection = new Vue({
     data:
     {
         rssVisible: true,
-        srs: newSpendingSection.srs
+        srs: JSON.parse(localStorage.getItem('rapid-spendings')),
+    },
+    methods: {
+        queryRapidSpendings: function () {
+            this.srs = JSON.parse(localStorage.getItem('rapid-spendings'));
+        }
     }
 })

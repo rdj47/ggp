@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/style.css">
+    <title>GGP ::Administración::</title>
+</head>
+<body>
+    <header>
+        <h1>Gestión de Gastos Personales</h1>
+        <nav>
+            <ul>
+                <li>Bandeja de Gastos</li>
+                <li>Reporte de Gastos</li>
+                <li>Configuración</li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="new-category">
+            <h2>Añadir nueva categoría</h2>
+            <label>Nombre: </label><input type="text" v-model="catName">
+            <button id="add-category" v-on:click="addCategory">Agregar categoría</button>
+        </section>
+        <section id="categories-list">
+            <h2>Categorías</h2>
+            <ul>
+                <li v-for="cat in sCat">{{cat.category}}</li>
+            </ul>
+
+        </section>
+    </main>
+    <footer>Footer</footer>    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="script/categories.js"></script>
+</body>
+</html>

@@ -49,7 +49,8 @@
                     <br>
                     <label for="category">Rubro: </label>
                     <select id="category" name="category" >
-                        <option value="example">example</option>
+                        <!--<option value="example">example</option>-->
+                        <option v-for="cat in sCat" :value="cat.category">{{cat.category}}</option>
                     </select>
                     <br>
                     <label>Frecuencia: </label>
@@ -87,17 +88,18 @@
         <section id="rapid-spendings" class="frame" v-if="rssVisible">
             <h2>Pila de gastos rápidos</h2>
             <div class="frame">
-                <h2>Gastos pendientes de registrar</h2> 
+                <h2>Pendientes de registrar</h2> 
                 <div v-for="rs in srs" class="frame">
                     <p>
                         Fecha: {{rs.humanDate}}<br>
                         Descripción: {{rs.desc}}<br>
                     </p>
-                    <button>Registrar gasto</button>
+                    <button>Registrar</button>
+                    <button>Descartar</button>
                 </div>
             </div>           
             <div id="deleted-rapid-spendings" class="frame">
-                <h2>Gastos eliminados</h2>
+                <h2>Eliminados</h2>
             </div>
         </section>
     </main>
