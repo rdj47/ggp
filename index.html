@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/style.css">
+    <title>GGP ::Pila de gastos::</title>
+</head>
+<body>
+    <header>
+        <h1>Gestión de Gastos Personales</h1>
+        <nav>
+            <ul>
+                <li>Bandeja de Gastos</li>
+                <li>Reporte de Gastos</li>
+                <li>Configuración</li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="new-spending-section" class="frame">
+            <div id="new-spending-type" v-if="nstVisible">
+                <h2>Añadir gasto</h2>
+                <p>Gasto rapido</p>
+                <button v-on:click="showRapidSpendingMenu">+</button>
+                <p>Gasto detallado</p>
+                <button v-on:click="showSpendingMenu">+</button>
+            </div>
+            <div id="new-rapid-spending-menu" class="frame" v-if="nrsmVisible">
+                <button v-on:click="closeSpendingMenu">X</button>
+                <h2>Nuevo gasto rápido</h2>
+                <label>Detalles del gasto: </label><input type="text" v-model="nrsDesc">
+                <br>
+                <button id="add-rapid-spending" v-on:click="addRapidSpending">Agregar gasto</button>
+            </div>
+            <div id="new-spending-menu" class="frame" v-if="nsmVisible">
+                <button v-on:click="closeSpendingMenu">X</button>
+                <h2>Nuevo gasto </h2>
+                <form id="new-spending-menu-form" action="">
+                    <label for="fecha">Fecha: </label>
+                    <input id="fecha" type="date" v-model="nsDate">
+                    <br>
+                    <label for="comercio">Comercio: </label>
+                    <input id="store" type="text" v-model="nsStore">
+                    <br>
+                    <label for="description">Descripción: </label>
+                    <input id="description" type="text" v-model="nsDesc">
+                    <br>
+                    <label for="category">Rubro: </label>
+                    <select id="category" name="category" >
+                        <option value="example">example</option>
+                    </select>
+                    <br>
+                    <label>Frecuencia: </label>
+                    <input id="habitual" type="radio" value="habitual" name="frequency" checked>
+                    <label for="habitual">Habitual</label>
+                    <input id="no-habitual" type="radio" value="no-habitual" name="frequency">
+                    <label for="no-habitual">No habitual</label>
+                    <br>
+                    <label for="amount">Monto: </label>
+                    <input id="amount" type="number" v-model="nsAmount">
+                    <br>
+                    <label>Compra en cuotas: </label>
+                    <br>
+                    <input id="no-installments" type="radio" value="no-installments" name="installments" checked v-on:click="hideInstallmentNumberSelect">
+                    <label for="no-installments">No</label>
+                    <input id="on-installments" type="radio" value="on-installments" name="installments" v-on:click="showInstallmentNumberSelect">
+                    <label for="on-installments">Sí</label>
+                    <br>
+                    <div v-if="inVisible">
+                        <label>Cantidad de cuotas: </label>
+                        <select id="installments-number" name="installments-number" >
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="6">6</option>
+                            <option value="9">9</option>
+                            <option value="12">12</option>
+                            <option value="18">18</option>
+                            <option value="24">24</option>
+                        </select>                    
+                    </div>
+                    <button id="add-spending" v-on:click="addSpending">Agregar gasto</button>                 
+                </form>
+            </div>
+        </section>        
+        <section id="rapid-spendings" class="frame" v-if="rssVisible">
+            <h2>Pila de gastos rápidos</h2>
+            <div class="frame">
+                <h2>Gastos pendientes de registrar</h2> 
+                <div v-for="rs in srs" class="frame">
+                    <p>
+                        Fecha: {{rs.humanDate}}<br>
+                        Descripción: {{rs.desc}}<br>
+                    </p>
+                    <button>Registrar gasto</button>
+                </div>
+            </div>           
+            <div id="deleted-rapid-spendings" class="frame">
+                <h2>Gastos eliminados</h2>
+            </div>
+        </section>
+    </main>
+    <footer>Pié de página</footer>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="script/script.js"></script>
+</body>
+</html>
