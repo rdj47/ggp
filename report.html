@@ -18,7 +18,20 @@
             </ul>
         </nav>
     </header>
-    <main></main>
+    <main>      
+        <section id="report">
+            <div v-for="y in periods">
+                {{y.year}}
+                <div v-for="month in y.months">
+                    {{month+1}}
+                    <!--<div v-for="s in spendings ">
+                        
+                    </div>-->
+            </div>
+        </section>  
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="script/report.js"></script>
     <footer>Pié de pagina</footer>
 </body>
 </html>

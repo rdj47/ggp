@@ -36,8 +36,8 @@
             </div>
             <div id="new-spending-menu" class="frame" v-if="nsmVisible">
                 <button v-on:click="closeSpendingMenu">X</button>
-                <h2>Nuevo gasto </h2>
-                <form id="new-spending-menu-form" action="">
+                <h2>Nuevo gasto</h2>
+                <form id="new-spending-menu-form" v-on:submit.prevent="addSpending">
                     <label for="fecha">Fecha: </label>
                     <input id="fecha" type="date" v-model="nsDate">
                     <br>
@@ -48,15 +48,15 @@
                     <input id="description" type="text" v-model="nsDesc">
                     <br>
                     <label for="category">Rubro: </label>
-                    <select id="category" name="category" >
+                    <select id="category" name="category" v-model="nsCat">
                         <!--<option value="example">example</option>-->
-                        <option v-for="cat in sCat" :value="cat.category">{{cat.category}}</option>
+                        <option v-for="cat in nsCatList" :value="cat.category">{{cat.category}}</option>
                     </select>
                     <br>
                     <label>Frecuencia: </label>
-                    <input id="habitual" type="radio" value="habitual" name="frequency" checked>
+                    <input id="habitual" type="radio" value="true" v-model="nsHab">
                     <label for="habitual">Habitual</label>
-                    <input id="no-habitual" type="radio" value="no-habitual" name="frequency">
+                    <input id="no-habitual" type="radio" value="false" v-model="nsHab">
                     <label for="no-habitual">No habitual</label>
                     <br>
                     <label for="amount">Monto: </label>
@@ -64,14 +64,14 @@
                     <br>
                     <label>Compra en cuotas: </label>
                     <br>
-                    <input id="no-installments" type="radio" value="no-installments" name="installments" checked v-on:click="hideInstallmentNumberSelect">
+                    <input id="no-installments" type="radio" value="false" v-model="nsInst" v-on:click="hideInstallmentNumberSelect">
                     <label for="no-installments">No</label>
-                    <input id="on-installments" type="radio" value="on-installments" name="installments" v-on:click="showInstallmentNumberSelect">
+                    <input id="on-installments" type="radio" value="true" v-model="nsInst" v-on:click="showInstallmentNumberSelect">
                     <label for="on-installments">Sí</label>
                     <br>
                     <div v-if="inVisible">
                         <label>Cantidad de cuotas: </label>
-                        <select id="installments-number" name="installments-number" >
+                        <select id="installments-number" name="installments-number" v-model="nsInsNum" >
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="6">6</option>
@@ -81,7 +81,7 @@
                             <option value="24">24</option>
                         </select>                    
                     </div>
-                    <button id="add-spending" v-on:click="addSpending">Agregar gasto</button>                 
+                    <button id="add-spending">Agregar gasto</button>                 
                 </form>
             </div>
         </section>        

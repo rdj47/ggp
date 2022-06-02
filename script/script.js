@@ -7,13 +7,16 @@ let newSpendingSection = new Vue({
        nsmVisible: false,
        //v-mode vars for new rapid spendings
        nrsDesc:'',
-       catList: '',
        //v-mode vars for new spendings
        nsDate: '',
        nsStore: '',
        nsDesc: '',
-       sCat: JSON.parse(localStorage.getItem('categories')),
+       nsCat:  JSON.parse(localStorage.getItem('categories'))[0].category,
+       nsCatList: JSON.parse(localStorage.getItem('categories')),
+       nsHab: true,
        nsAmount: '',
+       nsInst: false,
+       nsInstNum: null,
        inVisible: false
    },
    methods: {
@@ -64,17 +67,34 @@ let newSpendingSection = new Vue({
                 srs.push(rs);
             else 
                 srs = [rs];
-            console.log('srs: '+srs);
-            localStorage.removeItem('rapid-spendings');
+           localStorage.removeItem('rapid-spendings');
             localStorage.setItem('rapid-spendings',JSON.stringify(srs));
             rapidSpendigsSection.queryRapidSpendings();
 
         },
         addSpending: function() {
-            console.log("start addSpending");            
+            console.log("start addSpending");  
+            console.log(this.nsDate)      
             let s = {
-                desc: nsDesc
+                date: this.nsDate,
+                store: this.nsStore,
+                desc: this.nsDesc,
+                cat: this.nsCat,
+                hab: this.nsHab,
+                amount: this.nsAmount,
+                inst: this.nsInst,
+                instNum: this.nsInstNumns,
+                trialFlag: false
             }
+            console.log('s object: ');
+            console.log(s);
+            let ss = JSON.parse(localStorage.getItem('spendings'));
+            if (ss!=null)
+                ss.push(s);
+            else 
+                ss = [s];
+            localStorage.removeItem('spendings');
+            localStorage.setItem('spendings',JSON.stringify(ss));
         }
     }
 });
