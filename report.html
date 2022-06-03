@@ -20,13 +20,21 @@
     </header>
     <main>      
         <section id="report">
-            <div v-for="y in periods">
+            <div v-for="y in statement" class="frame">
                 {{y.year}}
-                <div v-for="month in y.months">
-                    {{month+1}}
-                    <!--<div v-for="s in spendings ">
-                        
-                    </div>-->
+                <div v-for="month in y.monthList" class="frame">
+                    {{month.month+1}}
+                    <div v-for="s in month.spendings ">
+                        <p>Fecha: {{s.date}}</p>
+                        <p>Comercio: {{s.store}}</p>
+                        <p>Descripción: {{s.date}}</p>
+                        <p>Categoría: {{s.cat}}</p>
+                        <p>Habitual: {{s.hab}}</p>
+                        <p>Monto: {{s.amount}}</p>
+                        <p>En Cuotas: {{s.inst}}</p>
+                        <p v-if="s.instNum">En Cuotas: {{s.instNum}}</p>
+                        <p>date: {{s.date}}</p>
+                    </div>
             </div>
         </section>  
     </main>

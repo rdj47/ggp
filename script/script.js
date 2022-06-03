@@ -83,7 +83,7 @@ let newSpendingSection = new Vue({
                 hab: this.nsHab,
                 amount: this.nsAmount,
                 inst: this.nsInst,
-                instNum: this.nsInstNumns,
+                instNum: this.nsInstNum,
                 trialFlag: false
             }
             console.log('s object: ');
