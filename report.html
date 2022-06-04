@@ -21,10 +21,11 @@
     <main>      
         <section id="report">
             <div v-for="y in statement" class="frame">
-                {{y.year}}
+                <h2>{{y.year}}</h2>
                 <div v-for="month in y.monthList" class="frame">
-                    {{month.month+1}}
-                    <div v-for="s in month.spendings ">
+                    <h3>{{month.month+1}}</h3>
+                    <h4>Gastos</h4>                    
+                    <div v-for="s in month.spendings">
                         <p>Fecha: {{s.date}}</p>
                         <p>Comercio: {{s.store}}</p>
                         <p>Descripción: {{s.date}}</p>
@@ -35,6 +36,14 @@
                         <p v-if="s.instNum">En Cuotas: {{s.instNum}}</p>
                         <p>date: {{s.date}}</p>
                     </div>
+                    <h4>Gastos por Categoría</h4>
+                    <div v-for="s in month.catList">
+                        <p>Categoría: {{s.cat}}</p>
+                        <p>Habituales: {{s.freqList[0].amount}}</p>
+                        <p>No Habituales: {{s.freqList[0].amount}}</p>
+                        <p>Total: {{s.freqList[0].amount+s.freqList[1].amount}}</p>
+                    </div>
+                </div>
             </div>
         </section>  
     </main>

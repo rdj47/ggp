@@ -14,7 +14,7 @@ let newSpendingSection = new Vue({
        nsCat:  JSON.parse(localStorage.getItem('categories'))[0].category,
        nsCatList: JSON.parse(localStorage.getItem('categories')),
        nsHab: true,
-       nsAmount: '',
+       nsAmount: 100,
        nsInst: false,
        nsInstNum: null,
        inVisible: false
