@@ -20,7 +20,8 @@
     </header>
     <main>      
         <section id="report">
-            <div v-for="y in statement" class="frame">
+            <p v-if="noSpendingsVisible"> No se han registrado gastos aún.</p>
+            <div v-for="y in statement" v-if="reportVisible" class="frame">
                 <h2>{{y.year}}</h2>
                 <div v-for="month in y.monthList" class="frame">
                     <h3>{{month.month+1}}</h3>
@@ -40,7 +41,7 @@
                     <div v-for="s in month.catList">
                         <p>Categoría: {{s.cat}}</p>
                         <p>Habituales: {{s.freqList[0].amount}}</p>
-                        <p>No Habituales: {{s.freqList[0].amount}}</p>
+                        <p>No Habituales: {{s.freqList[1].amount}}</p>
                         <p>Total: {{s.freqList[0].amount+s.freqList[1].amount}}</p>
                     </div>
                 </div>

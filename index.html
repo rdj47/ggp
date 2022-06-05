@@ -30,19 +30,27 @@
             <div id="new-rapid-spending-menu" class="frame" v-if="nrsmVisible">
                 <button v-on:click="closeSpendingMenu">X</button>
                 <h2>Nuevo gasto rápido</h2>
-                <label>Detalles del gasto: </label><input type="text" v-model="nrsDesc">
+                <label>Detalles del gasto: </label>
+                <input type="text" v-model="nrsDesc" required>
                 <br>
                 <button id="add-rapid-spending" v-on:click="addRapidSpending">Agregar gasto</button>
             </div>
             <div id="new-spending-menu" class="frame" v-if="nsmVisible">
                 <button v-on:click="closeSpendingMenu">X</button>
+                <div v-if="nrsdVisible">
+                    <h2>Detalles gasto rápido</h2>
+                    <p>
+                        Fecha: {{rsHumanDate}} <br>
+                        Descripción: {{rsDetails}} <br>
+                    </p>
+                </div>
                 <h2>Nuevo gasto</h2>
                 <form id="new-spending-menu-form" v-on:submit.prevent="addSpending">
                     <label for="fecha">Fecha: </label>
-                    <input id="fecha" type="date" v-model="nsDate">
+                    <input id="fecha" type="date" v-model="nsDate" required>
                     <br>
                     <label for="comercio">Comercio: </label>
-                    <input id="store" type="text" v-model="nsStore">
+                    <input id="store" type="text" v-model="nsStore" required>
                     <br>
                     <label for="description">Descripción: </label>
                     <input id="description" type="text" v-model="nsDesc">
@@ -60,7 +68,7 @@
                     <label for="no-habitual">No habitual</label>
                     <br>
                     <label for="amount">Monto: </label>
-                    <input id="amount" type="number" v-model="nsAmount">
+                    <input id="amount" type="number" v-model="nsAmount" required>
                     <br>
                     <label>Compra en cuotas: </label>
                     <br>
@@ -71,7 +79,7 @@
                     <br>
                     <div v-if="inVisible">
                         <label>Cantidad de cuotas: </label>
-                        <select id="installments-number" name="installments-number" v-model="nsInsNum" >
+                        <select id="installments-number" name="installments-number" v-model="nsInsNum" required>
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="6">6</option>
@@ -87,19 +95,27 @@
         </section>        
         <section id="rapid-spendings" class="frame" v-if="rssVisible">
             <h2>Pila de gastos rápidos</h2>
-            <div class="frame">
+            <div class="frame">                
                 <h2>Pendientes de registrar</h2> 
-                <div v-for="rs in srs" class="frame">
-                    <p>
-                        Fecha: {{rs.humanDate}}<br>
-                        Descripción: {{rs.desc}}<br>
-                    </p>
-                    <button>Registrar</button>
-                    <button>Descartar</button>
+                <div v-for="rs in srs"  class="frame">
+                    <div v-if="rs.state=='A'">
+                        <p>
+                            Fecha: {{rs.humanDate}}<br>
+                            Descripción: {{rs.desc}}<br>
+                        </p>
+                        <button v-on:click="registerRapidSpending(rs.date,rs.humanDate,rs.desc)" >Registrar</button>
+                        <button v-on:click="discardRapidSpending(rs.date)">Descartar</button>
+                    </div>
                 </div>
             </div>           
             <div id="deleted-rapid-spendings" class="frame">
                 <h2>Eliminados</h2>
+                <div v-for="rs in srs" v-if="rs.state=='I'" class="frame">
+                    <p>
+                        Fecha: {{rs.humanDate}}<br>
+                        Descripción: {{rs.desc}}<br>
+                    </p>
+                </div>
             </div>
         </section>
     </main>

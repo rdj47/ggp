@@ -4,9 +4,14 @@ let newSpendingSection = new Vue({
        //flags to make tag visible or not
        nstVisible: true,
        nrsmVisible: false,
-       nsmVisible: false,
+       nrsdVisible: false,
+       nsmVisible: false,              
        //v-mode vars for new rapid spendings
        nrsDesc:'',
+       //v-mode for new rapid spending details
+       rsDate: null,
+       rsHumanDate: null,
+       rsDetails: null,
        //v-mode vars for new spendings
        nsDate: '',
        nsStore: '',
@@ -22,42 +27,45 @@ let newSpendingSection = new Vue({
    methods: {
         showRapidSpendingMenu: function() {
             console.log("start showRapidSpendingMenu()");
-            this.nstVisible=false;
-            this.nrsmVisible=true;
-            this.nsmVisible=false;
-            rapidSpendigsSection.rssVisible=false;
+            this.nstVisible = false;
+            this.nrsmVisible = true;
+            this.nsmVisible = false;
+            rapidSpendigsSection.rssVisible = false;
         },
         showSpendingMenu: function() {
             console.log("start showSpendingMenu()");
-            this.nstVisible=false;
-            this.nrsmVisible=false;
-            this.nsmVisible=true;
-            rapidSpendigsSection.rssVisible=false;
+            this.nstVisible = false;
+            this.nrsmVisible = false;
+            this.nsmVisible = true;
+            rapidSpendigsSection.rssVisible = false;
         },
         closeSpendingMenu: function() {
             console.log("start closeSpendingMenu");
-            this.nstVisible=true;
-            this.nrsmVisible=false;
-            this.nsmVisible=false;
-            rapidSpendigsSection.rssVisible=true;
+            this.nstVisible = true;
+            this.nrsmVisible = false;
+            this.nsmVisible = false;
+            this.nrsdVisible = false,
+            rapidSpendigsSection.rssVisible = true;
         },
         showInstallmentNumberSelect: function() {
             console.log("start showInstallmentNumberSelect");
-            this.inVisible=true;
+            this.inVisible = true;
         },
         hideInstallmentNumberSelect: function() {
             console.log("start hideInstallmentNumberSelect");
-            this.inVisible=false;
+            this.inVisible = false;
         },
         addRapidSpending: function() {
             console.log("start addRapindSpending");
             let rs = {
                 //id for rs must be implemented
-                "date": Date.now(),
+                date: Date.now(),
                 // humanDate should be removed once it is clarified how v-for handle intermediate values
-                "humanDate": new Date().toString(),
-                "desc": this.nrsDesc,
-                "trialFlag": false
+                humanDate: new Date().toString(),
+                desc: this.nrsDesc,
+                // 'A' -> Active
+                state: 'A',
+                trialFlag: false
             }
             console.log('rs object: ');
             console.log(rs);
@@ -67,10 +75,10 @@ let newSpendingSection = new Vue({
                 srs.push(rs);
             else 
                 srs = [rs];
-           localStorage.removeItem('rapid-spendings');
+            localStorage.removeItem('rapid-spendings');
             localStorage.setItem('rapid-spendings',JSON.stringify(srs));
             rapidSpendigsSection.queryRapidSpendings();
-
+            alert("El gasto rápido se guardó con éxito.");
         },
         addSpending: function() {
             console.log("start addSpending");  
@@ -95,6 +103,14 @@ let newSpendingSection = new Vue({
                 ss = [s];
             localStorage.removeItem('spendings');
             localStorage.setItem('spendings',JSON.stringify(ss));
+            if (this.nrsdVisible) {
+                rapidSpendigsSection.deleteRapidSpending();
+                rapidSpendigsSection.queryRapidSpendings();
+            }
+            this.rsDate = null,
+            this.rsHumanDate = null,
+            this.rsDetails = null,
+            alert("El gasto se guardó con éxito.");           
         }
     }
 });
@@ -105,10 +121,41 @@ let rapidSpendigsSection = new Vue({
     {
         rssVisible: true,
         srs: JSON.parse(localStorage.getItem('rapid-spendings')),
+        srsd: JSON.parse(localStorage.getItem('rapid-spendings-deleted')),
+
     },
     methods: {
         queryRapidSpendings: function () {
             this.srs = JSON.parse(localStorage.getItem('rapid-spendings'));
+        },
+        registerRapidSpending: function (date, humanDate, details) {
+            newSpendingSection.rsDate = date;
+            newSpendingSection.rsHumanDate = humanDate;
+            newSpendingSection.rsDetails = details;
+            newSpendingSection.nrsdVisible = true;
+            newSpendingSection.showSpendingMenu();            
+        },
+        deleteRapidSpending: function () {
+            console.log("start deleteRapidSpending");
+            let ss = JSON.parse(localStorage.getItem('rapid-spendings'));
+            rsIndex = ss.findIndex( ({ date }) => date ==  newSpendingSection.rsDate);
+            // 'P' -> Processed
+            ss[rsIndex].state = 'P';
+            localStorage.removeItem('rapid-spendings');
+            localStorage.setItem('rapid-spendings',JSON.stringify(ss)); 
+            this.queryRapidSpendings();                              
+        },
+        discardRapidSpending: function(date) {
+            console.log("start discardRapidSpending");
+            newSpendingSection.rsDate = date;
+            let ss = JSON.parse(localStorage.getItem('rapid-spendings'));
+            rsIndex = ss.findIndex( ({ date }) => date ==  newSpendingSection.rsDate);
+            // 'I' -> Inactive
+            ss[rsIndex].state = 'I';
+            localStorage.removeItem('rapid-spendings');
+            localStorage.setItem('rapid-spendings',JSON.stringify(ss)); 
+            this.queryRapidSpendings(); 
+            newSpendingSection.rsDate = null;
         }
     }
 })
